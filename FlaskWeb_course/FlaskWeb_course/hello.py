@@ -97,5 +97,24 @@ def user(name):
 
      return render_template('user.html', name=name)  #store in the argument "name" (placeholder) the variable called "name"
 
+
+
+#{::::::::::::::::::::::::::::::    Example 3-6 Template for error handle
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
+
+
+
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
