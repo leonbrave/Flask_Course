@@ -9,6 +9,8 @@ from flask import render_template
 
 from flask.ext.bootstrap import Bootstrap
 
+from flask import url_for
+
 
 app = Flask(__name__)
 
@@ -86,10 +88,11 @@ manager = Manager(app)
 #{::::::::::::::::::::::::::::::    Example 3-3 Templates
 
 
-@app.route('/')
-def index():
+#@app.route('/')
+#def index():
 
-    return render_template('index.html')
+
+#    return render_template('index.html')
  
  
 @app.route('/user/<name>')
@@ -101,7 +104,7 @@ def user(name):
 
 #{::::::::::::::::::::::::::::::    Example 3-6 Template for error handle
 
-j
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
@@ -112,7 +115,14 @@ def internal_server_error(e):
     return render_template('500.html'), 500
 
 
+#{::::::::::::::::::::::::::::::    Example links
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+#{::::::::::::::::::::::::::::::    Example 3-10 favicon
 
 
 

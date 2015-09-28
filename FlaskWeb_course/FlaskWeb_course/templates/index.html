@@ -1,11 +1,7 @@
 ﻿{% extends "base.html" %}
-{% block title %}Index{% endblock %}
-{% block head %}
-
-{{ super() }} <!--retain the original contents-->
-<style>
-</style>
-{% endblock %}
-{% block body %}
-<h1>Hello, World!</h1>
+{% block title %}Flasky{% endblock %}
+{% block page_content %}
+<div class="page-header">
+    <h1> Web Route!!! {{ name }}!</h1>
+</div>
 {% endblock %}
