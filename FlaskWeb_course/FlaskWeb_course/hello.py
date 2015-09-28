@@ -101,7 +101,7 @@ def user(name):
 
 #{::::::::::::::::::::::::::::::    Example 3-6 Template for error handle
 
-
+j
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
