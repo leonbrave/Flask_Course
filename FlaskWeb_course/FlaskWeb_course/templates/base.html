@@ -1,6 +1,21 @@
 ﻿{% extends "bootstrap/base.html" %}
 
+
+ <!--example 3-12. templates/base.html: import moment.js library, Begin-->
+
+
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
+{{ moment.lang("es") }}
+
+{% endblock %}
+
+
+ <!--example 3-12. templates/base.html: import moment.js library, End -->
+
 {% block head %}
+
 {{ super() }}
 <link rel="shortcut icon" href="{{ url_for('static', filename = 'favicon.ico') }}"
       type="image/x-icon">

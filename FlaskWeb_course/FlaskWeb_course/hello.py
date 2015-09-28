@@ -11,6 +11,8 @@ from flask.ext.bootstrap import Bootstrap
 
 from flask import url_for
 
+from flask.ext.moment import Moment
+
 
 app = Flask(__name__)
 
@@ -117,12 +119,27 @@ def internal_server_error(e):
 
 #{::::::::::::::::::::::::::::::    Example links
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+#@app.route('/')
+#def index():
+#    return render_template('index.html')
 
 
 #{::::::::::::::::::::::::::::::    Example 3-10 favicon
+
+#done on Base
+
+#{::::::::::::::::::::::::::::::    Example 3-11 Flask Moment
+
+moment = Moment(app)
+
+#{::::::::::::::::::::::::::::::    Example 3-13 Flask Moment
+
+from datetime import datetime
+
+@app.route('/')
+def index():
+    return render_template('index.html',
+current_time=datetime.utcnow())
 
 
 

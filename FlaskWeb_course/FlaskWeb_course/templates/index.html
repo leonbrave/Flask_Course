@@ -3,5 +3,14 @@
 {% block page_content %}
 <div class="page-header">
     <h1> Web Route!!! {{ name }}!</h1>
+
+         <!--Example 3-14. templates/index.html: Timestamp rendering with Flask-Moment, Start ! -->
+    <p>The local date and time is {{ moment(current_time).format('LLL') }}.</p>
+    <p>That was {{ moment(current_time).fromNow(refresh=True) }}</p>
+    
+
+        <!--Example 3-14. templates/index.html: Timestamp rendering with Flask-Moment, Ends ! -->
+
+
 </div>
 {% endblock %}
