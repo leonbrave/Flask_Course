@@ -18,6 +18,8 @@ from flask.ext.wtf import Form
 from wtforms import StringField, SubmitField
 from wtforms.validators import Required
 
+from flask import session
+from flask import redirect
 
 app = Flask(__name__)
 
@@ -161,16 +163,44 @@ class NameForm(Form):
 #{::::::::::::::::::::::::::::::    Example 4-4 Flask WTF web forms
 
 
+#@app.route('/', methods=['GET', 'POST'])
+#def index():
+#    name = None
+#    form = NameForm()
+#    if form.validate_on_submit():
+#        name = form.name.data
+#        form.name.data = ''
+    
+#    return render_template('index.html', form=form, name=name,
+#current_time=datetime.utcnow())
+
+
+#{::::::::::::::::::::::::::::::    Example 4-4 Flask WTF with redirects and user sesions
+
+#@app.route('/', methods=['GET', 'POST'])
+#def index():
+#    name = None
+#    form = NameForm()
+#    if form.validate_on_submit():
+#        session['name'] = form.name.data
+#        form.name.data = ''
+    
+#    return render_template('index.html', form=form, name=session.get('name'),
+#current_time=datetime.utcnow())
+
+
+#{::::::::::::::::::::::::::::::    Example 4-4 Flask WTF with redirects and user sesions, GOOD PRACTICE WITH URL_FOR)
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    name = None
     form = NameForm()
     if form.validate_on_submit():
-        name = form.name.data
-        form.name.data = ''
-    
-    return render_template('index.html', form=form, name=name,
+        session['name'] = form.name.data
+        return redirect(url_for('index'))
+
+    return render_template('index.html', form=form, name=session.get('name'),
 current_time=datetime.utcnow())
+
 
 if __name__ == '__main__':
     app.run(debug=True)
