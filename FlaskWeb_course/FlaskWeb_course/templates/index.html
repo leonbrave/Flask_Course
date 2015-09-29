@@ -1,15 +1,28 @@
 ﻿{% extends "base.html" %}
+
+{% import "bootstrap/wtf.html" as wtf %} <!--Example 4-3 flask-bootstrap render a form-->
 {% block title %}Flasky{% endblock %}
 {% block page_content %}
 <div class="page-header">
     <h1> Web Route!!! {{ name }}!</h1>
 
-         <!--Example 3-14. templates/index.html: Timestamp rendering with Flask-Moment, Start ! -->
+    <!--Example 3-14. templates/index.html: Timestamp rendering with Flask-Moment, Start ! -->
     <p>The local date and time is {{ moment(current_time).format('LLL') }}.</p>
     <p>That was {{ moment(current_time).fromNow(refresh=True) }}</p>
-    
 
-        <!--Example 3-14. templates/index.html: Timestamp rendering with Flask-Moment, Ends ! -->
+    <!--Example 3-14. templates/index.html: Timestamp rendering with Flask-Moment, Ends ! -->
+
+    <br />
+
+    <!--Example 4-3 flask-bootstrap render a form-->
+
+    <div class="page-header">
+        <h1>Hello, {% if name %}{{ name }}{% else %}Stranger{% endif %}!</h1>  <!--The form put "Stranger" if there isn't a argument defined-->
+    </div>
+
+    {{ wtf.quick_form(form) }}
+
+   
 
 
 </div>

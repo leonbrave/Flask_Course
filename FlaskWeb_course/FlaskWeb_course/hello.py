@@ -3,6 +3,7 @@ Examples
 """
 
 from flask import Flask
+
 from flask.ext.script import Manager
 
 from flask import render_template
@@ -12,6 +13,10 @@ from flask.ext.bootstrap import Bootstrap
 from flask import url_for
 
 from flask.ext.moment import Moment
+
+from flask.ext.wtf import Form
+from wtforms import StringField, SubmitField
+from wtforms.validators import Required
 
 
 app = Flask(__name__)
@@ -136,12 +141,36 @@ moment = Moment(app)
 
 from datetime import datetime
 
-@app.route('/')
+#@app.route('/')
+#def index():
+#    return render_template('index.html',
+#current_time=datetime.utcnow())
+
+
+#{::::::::::::::::::::::::::::::    Example 4-1 Flask WTF configuration encription Key
+
+app.config['SECRET_KEY'] = 'hard to guess string'
+
+#{::::::::::::::::::::::::::::::    Example 4-1 Flask WTF configuration encription Key
+
+class NameForm(Form):
+    name = StringField('What is your name?', validators=[Required()])
+    submit = SubmitField('Submit')
+
+
+#{::::::::::::::::::::::::::::::    Example 4-4 Flask WTF web forms
+
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html',
+    name = None
+    form = NameForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        form.name.data = ''
+    
+    return render_template('index.html', form=form, name=name,
 current_time=datetime.utcnow())
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
