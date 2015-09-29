@@ -47,6 +47,18 @@
 {% endblock %}
 {% block content %}
 <div class="container">
+
+    <!--Example 4-7 Flash message rendering--> 
+
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    <!--Example 4-7 Flash message rendering, End--> 
+
     {% block page_content %}{% endblock %}
 </div>
 {% endblock %}

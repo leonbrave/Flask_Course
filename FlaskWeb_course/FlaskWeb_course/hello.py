@@ -21,6 +21,8 @@ from wtforms.validators import Required
 from flask import session
 from flask import redirect
 
+from flask import flash
+
 app = Flask(__name__)
 
 bootstrap = Bootstrap(app) # flask-boostrap initilization 
@@ -191,15 +193,30 @@ class NameForm(Form):
 
 #{::::::::::::::::::::::::::::::    Example 4-4 Flask WTF with redirects and user sesions, GOOD PRACTICE WITH URL_FOR)
 
+#@app.route('/', methods=['GET', 'POST'])
+#def index():
+#    form = NameForm()
+#    if form.validate_on_submit():
+#        session['name'] = form.name.data
+#        return redirect(url_for('index'))
+
+#    return render_template('index.html', form=form, name=session.get('name'),
+#current_time=datetime.utcnow())
+
+
+#{::::::::::::::::::::::::::::::    Example 4-6 Flashed Messages
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = NameForm()
     if form.validate_on_submit():
+        old_name = session.get('name')
+        if old_name is not None and old_name != form.name.data:
+            flash('Looks like you have changed your name!')
         session['name'] = form.name.data
+        form.name.data = ''
         return redirect(url_for('index'))
-
-    return render_template('index.html', form=form, name=session.get('name'),
-current_time=datetime.utcnow())
+    return render_template('index.html',
+        form = form, name = session.get('name'), current_time=datetime.utcnow())
 
 
 if __name__ == '__main__':
