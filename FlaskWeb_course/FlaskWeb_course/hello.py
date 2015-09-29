@@ -23,6 +23,8 @@ from flask import redirect
 
 from flask import flash
 
+from flask.ext.sqlalchemy import SQLAlchemy
+
 app = Flask(__name__)
 
 bootstrap = Bootstrap(app) # flask-boostrap initilization 
@@ -205,6 +207,7 @@ class NameForm(Form):
 
 
 #{::::::::::::::::::::::::::::::    Example 4-6 Flashed Messages
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = NameForm()
@@ -217,6 +220,18 @@ def index():
         return redirect(url_for('index'))
     return render_template('index.html',
         form = form, name = session.get('name'), current_time=datetime.utcnow())
+
+#{::::::::::::::::::::::::::::::    Example 5-1 Data base configuration SQLAlchemy
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] =\
+'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+
+db = SQLAlchemy(app)    #The db object instantiated from class SQLAlchemy represents the database and provides
+                        #access to all the functionality of Flask-SQLAlchemy
 
 
 if __name__ == '__main__':
