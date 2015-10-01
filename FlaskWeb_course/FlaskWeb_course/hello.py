@@ -1,6 +1,7 @@
 ﻿"""
 Examples
 """
+import os
 
 from flask import Flask
 
@@ -25,9 +26,18 @@ from flask import flash
 
 from flask.ext.sqlalchemy import SQLAlchemy
 
+
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+
 app = Flask(__name__)
 
-bootstrap = Bootstrap(app) # flask-boostrap initilization 
+manager = Manager(app)
+bootstrap = Bootstrap(app)
+moment = Moment(app)
+#db = SQLAlchemy(app)
+
+#bootstrap = Bootstrap(app) # flask-boostrap initilization 
 
 #{::::::::::::::::::::::::::::::    Example 2.1 page 10
 
@@ -87,9 +97,6 @@ bootstrap = Bootstrap(app) # flask-boostrap initilization
 #{::::::::::::::::::::::::::::::    Example 2-3  page 17 Use of Flask-script extension
 
 
-
-
-manager = Manager(app)
 # ...
 
 
@@ -141,7 +148,7 @@ def internal_server_error(e):
 
 #{::::::::::::::::::::::::::::::    Example 3-11 Flask Moment
 
-moment = Moment(app)
+#moment = Moment(app)
 
 #{::::::::::::::::::::::::::::::    Example 3-13 Flask Moment
 
@@ -223,34 +230,92 @@ def index():
 
 #{::::::::::::::::::::::::::::::    Example 5-1 Data base configuration SQLAlchemy
 
-basedir = os.path.abspath(os.path.dirname(__file__))
+#basedir = os.path.abspath(os.path.dirname(__file__))
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] =\
-'sqlite:///' + os.path.join(basedir, 'data.sqlite')
-app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+#app = Flask(__name__)
 
-db = SQLAlchemy(app)    #The db object instantiated from class SQLAlchemy represents the database and provides
+#app.config['SQLALCHEMY_DATABASE_URI'] =\
+#'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+#app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+
+#db = SQLAlchemy(app)    #The db object instantiated from class SQLAlchemy represents the database and provides
                         #access to all the functionality of Flask-SQLAlchemy
 
+#{::::::::::::::::::::::::::::::    Example 5-2 and 5-3. hello.py: Role and User model definition
 
 
-#{::::::::::::::::::::::::::::::    Example 5-2. hello.py: Role and User model definition
-class Role(db.Model):
-    __tablename__ = 'roles'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=True)
-   
-    def __repr__(self):
-        return '<Role %r>' % self.name
+#class Role(db.Model):
+#   __tablename__ = 'roles'
+#   id = db.Column(db.Integer, primary_key=True)
+#   name = db.Column(db.String(64), unique=True)
+#   users = db.relationship('User', backref='role', lazy='dynamic')
 
-class User(db.Model):
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), unique=True, index=True)
+#   def __repr__(self):
+#        return '<Role %r>' % self.name
 
-    def __repr__(self):
-     return '<User %r>' % self.username
+ 
+
+#class User(db.Model):
+#    __tablename__ = 'users'
+#    id = db.Column(db.Integer, primary_key=True)
+#    username = db.Column(db.String(64), unique=True, index=True)
+#    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+
+#    def __repr__(self):
+#        return '<User %r>' % self.username
+
+
+#Step in interactive Python Shell,  create the initial database, import dv object in an interactive Python shell
+
+#from hello import db
+#db.create_all()
+
+#Step, To create the database you can use the init_db function:
+
+#from yourapplication.database import init_db
+#init_db()
+
+
+
+
+#{::::::::::::::::::::::::::::::    Example 5-3. hello.py: Relationships (only example, up is all the data integrated to the example)
+
+#class Role(db.Model):
+#    # ...
+#    users = db.relationship('User', backref='role')
+
+#class User(db.Model):
+#    # ...
+#    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+
+
+
+
+#admin_role = Role(name='Admin')
+#mod_role = Role(name='Moderator')
+#user_role = Role(name='User')
+#user_john = User(username='john', role=admin_role)
+#user_susan = User(username='susan', role=user_role)
+#user_david = User(username='david', role=user_role)
+
+#{::::::::::::::::::::::::::::::  Testing with Flask documentation, SQL Alchemy 
+
+
+#Testing
+
+from database import db_session
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()
+
+
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
+    manager.run()
+    
